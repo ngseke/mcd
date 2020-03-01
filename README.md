@@ -1,29 +1,16 @@
-![Vue.js Logo](https://github.com/zeit/now/blob/master/packages/frameworks/logos/vue.svg)
+![](https://i.imgur.com/iTTg1AI.png)
 
-# Vue.js Example
+# I Love McD
 
-This directory is a brief example of a [Vue.js](https://vuejs.org/) app that can be deployed with ZEIT Now and zero configuration.
+🍟 麥當勞菜單價格速查
 
-## Deploy Your Own
+https://mcd.now.sh
 
-Deploy your own Vue.js project with ZEIT Now.
-
-[![Deploy with ZEIT Now](https://zeit.co/button)](https://zeit.co/import/project?template=https://github.com/zeit/now/tree/master/examples/vue)
-
-_Live Example: https://vue.now-examples.now.sh_
-
-### How We Created This Example
-
-To get started with Vue.js deployed with ZEIT Now, you can use the [Vue CLI](https://cli.vuejs.org/guide/creating-a-project.html#vue-create) to initialize the project:
-
+## 開發
 ```shell
-$ vue create
+$ npm i
 ```
 
-### Deploying From Your Terminal
-
-You can deploy your new Vue.js project with a single command from your terminal using [Now CLI](https://zeit.co/download):
-
 ```shell
-$ now
+$ now dev
 ```

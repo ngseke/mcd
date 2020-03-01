@@ -1,0 +1,40 @@
+input[type=checkbox]
+  display: none
+  & + span
+    cursor: pointer
+    display: flex
+    align-items: center
+    position: relative
+    font-size: 12px
+    &::before
+      content: ''
+      display: inline-block
+      width: 10px
+      height: 10px
+      background-color: white
+      margin-right: 10px
+      transition: background-color .2s
+    &::after
+      content: '✓'
+      transition: all .2s
+      font-size: 1rem
+      font-weight: bold
+      color: white
+      position: absolute
+      bottom: 0
+      left: -2px
+      text-shadow: 0 0 3px rgba($dark, .7)
+      opacity: 0
+      transform: scale(.5)
+      
+  &:checked + span
+    color: $primary
+    
+    &::before
+      background-color: $primary
+    &::after
+      opacity: 1
+      transform: none
+
+label
+  margin-right: 1rem
