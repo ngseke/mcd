@@ -22,7 +22,7 @@ async function getSet () {
     content,
     source: {
       name: 'yoti.life',
-      url: 'https://yoti.life/mcdonalds-menud/',
+      url: 'https://yoti.life/mcdonalds-menu/',
     },
     i: process.env.firebase
   }
