@@ -35,6 +35,8 @@
 </template>
 
 <script>
+import { debounce } from 'throttle-debounce'
+
 import axios from 'axios'
 import dayjs from 'dayjs'
 import List from '@/components/List.vue'
@@ -72,6 +74,7 @@ export default {
   },
   created () {
     this.config = config.load()
+    this.debouncedSaveConfig = debounce(300, () => config.save(this.config))
   },
   async mounted () {
     this.setInputEvent()
@@ -122,8 +125,8 @@ export default {
   },
   watch: {
     config: {
-      handler (value) {
-        config.save(value)
+      handler () {
+        this.debouncedSaveConfig()
       },
       deep: true
     }
