@@ -31,6 +31,6 @@ async function runCrawlerAndWrite () {
 }
 
 function getIsExpired (timestamp) {
-  const ttl = 12  // unit: hrs
+  const ttl = 48 // unit: hrs
   return dayjs().diff(dayjs(timestamp),'h') > ttl
 }

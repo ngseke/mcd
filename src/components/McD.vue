@@ -13,21 +13,20 @@
         TextField(v-model.trim='search' placeholder='搜尋' maxlength='10' :isOnKeyEnterBlur='true')
       .col-12.col-sm-auto
         label
-          input(type='checkbox' v-model='isAllSetShow')
+          input(type='checkbox' v-model='config.isAllSetShow')
           span 所有套餐價格
         label
-          input(type='checkbox' v-model='isTable')
+          input(type='checkbox' v-model='config.isTable')
           span 表格
-  
-  transition(name='fade' mode='out-in')
-    .error(v-if='data === false') 暫時查不到價 :(
-    Loader(v-else-if='!data')
-    .row.justify-content-center(v-else)
-      section.col-12.col-lg-10(v-for='section in data.content')
-        h2(:id='section.title'): span {{ section.title }}
-        span.no-result(v-if='!filterItems(section.content).length') 無結果
-        DataTable(v-else-if='isTable' :list='filterItems(section.content)' :briefSets="briefSets" :isAllSetShow='isAllSetShow')
-        List(v-else :list='filterItems(section.content)' :briefSets="briefSets" :isAllSetShow='isAllSetShow')
+   
+  .error(v-if='data === false') 暫時查不到價 :(
+  Loader(v-else-if='!data')
+  .row.justify-content-center(v-else)
+    section.col-12.col-lg-10(v-for='section in data.content')
+      h2(:id='section.title'): span {{ section.title }}
+      span.no-result(v-if='!filterItems(section.content).length') 無結果
+      DataTable(v-else-if='config.isTable' :list='filterItems(section.content)' :briefSets="briefSets" :isAllSetShow='config.isAllSetShow')
+      List(v-else :list='filterItems(section.content)' :briefSets="briefSets" :isAllSetShow='config.isAllSetShow')
         
   Footer
     .source(v-if='data')
@@ -46,6 +45,9 @@ import Links from '@/components/Links.vue'
 import TextField from '@/components/TextField.vue'
 import Footer from '@/components/Footer.vue'
 
+import * as storage from '@/assets/js/storage'
+import * as config from '@/assets/js/config'
+
 export default {
   name: 'Menu',
   components: {
@@ -62,24 +64,37 @@ export default {
     return {
       data: null,
       search: '',
-      isAllSetShow: false,
-      isTable: false,
+      config: {
+        isAllSetShow: false,
+        isTable: false,
+      }
     }
   },
   async mounted () {
-    await this.fetch()
+    this.config = config.load()
+    await this.load()
   },
   methods: {
-    async fetch () {
+    async load () {
+      const data = storage.load()
+      
+      if (data) {
+        this.data = data
+      } else {
+        await this.fetchAndSave()
+      }
+    },
+    async fetchAndSave () {
       try {
         this.data = null
         this.data = (await axios.get('/api/get')).data
+        storage.save(this.data)
       } catch (err) {
         this.data = false
       }
     },
     refetch () {
-      if (this.data) this.fetch()
+      if (this.data) this.fetchAndSave()
     },
     filterItems (list) {
       return list.filter(item => item.main.includes(this.search))
@@ -92,6 +107,14 @@ export default {
         ? dayjs(data.updatedDate).format('YYYY-MM-DD')
         : null
     },
+  },
+  watch: {
+    config: {
+      handler (value) {
+        config.save(value)
+      },
+      deep: true
+    }
   }
 }
 </script>
@@ -169,12 +192,5 @@ section
   color: rgba(white, .6)
   font-size: .8rem
   font-style: italic
-  
-.fade
-  &-enter, &-leave-to
-    opacity: 0
-  &-enter-to, &-leave
-    opacity: 1
-  &-enter-active, &-leave-active
-    transition: all .2s
+   
 </style>
