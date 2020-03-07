@@ -9,6 +9,6 @@ export function load () {
   const data = localStorage.getItem(configKey)
   return data
     ? JSON.parse(data)
-    : null
+    : {}
 }
  
