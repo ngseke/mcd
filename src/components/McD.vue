@@ -4,14 +4,14 @@
   header.row.justify-content-center: .col-12.col-lg-10
     h1(title='I Love McD'): img(src='@/assets/logo.png' alt='I Love McD')
     span.updated(v-if='data' @click='refetch') 上次更新 {{ updatedDate }}
-    
     Links(:sections='data.content' v-if='data')
       
   .panel.row: .col-12.col-lg-10
     .row.align-items-center
       .col-12.col-sm-auto
-        TextField(v-model.trim='search' placeholder='搜尋' maxlength='10' :isOnKeyEnterBlur='true')
-      .col-12.col-sm-auto
+        TextField(v-model.trim='config.search' placeholder='搜尋' maxlength='10' :isOnKeyEnterBlur='true' ref='search')
+          i.gg-search
+      .col-12.col-sm-auto.d-none.d-sm-block
         label
           input(type='checkbox' v-model='config.isAllSetShow')
           span 所有套餐價格
@@ -63,14 +63,16 @@ export default {
     this.briefSets = ['單點', '經典', '薯餅']
     return {
       data: null,
-      search: '',
+      
       config: {
         isAllSetShow: false,
         isTable: false,
+        search: '',
       }
     }
   },
   async mounted () {
+    this.setInputEvent()
     this.config = config.load()
     await this.load()
   },
@@ -97,7 +99,15 @@ export default {
       if (this.data) this.fetchAndSave()
     },
     filterItems (list) {
-      return list.filter(item => item.main.includes(this.search))
+      return list.filter(item => item.main.includes(this.config.search || ''))
+    },
+    setInputEvent () {
+      const { search: { $el } } = this.$refs
+      const handler = e => {
+        if (!($el && $el.contains(e.target))) $el.blur()
+      }
+      document.addEventListener('click', handler)
+      this.$once('hook:beforeDestroy', () => document.removeEventListener('click', handler))
     },
   },
   computed: {
