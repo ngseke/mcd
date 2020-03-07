@@ -11,7 +11,7 @@
       .col-12.col-sm-auto
         TextField(v-model.trim='config.search' placeholder='搜尋' maxlength='10' :isOnKeyEnterBlur='true' ref='search')
           i.gg-search
-      .col-12.col-sm-auto.d-none.d-sm-block
+      .col-12.col-sm-auto
         label
           input(type='checkbox' v-model='config.isAllSetShow')
           span 所有套餐價格
@@ -63,7 +63,6 @@ export default {
     this.briefSets = ['單點', '經典', '薯餅']
     return {
       data: null,
-      
       config: {
         isAllSetShow: false,
         isTable: false,
@@ -71,9 +70,11 @@ export default {
       }
     }
   },
+  created () {
+    this.config = config.load()
+  },
   async mounted () {
     this.setInputEvent()
-    this.config = config.load()
     await this.load()
   },
   methods: {
@@ -99,7 +100,8 @@ export default {
       if (this.data) this.fetchAndSave()
     },
     filterItems (list) {
-      return list.filter(item => item.main.includes(this.config.search || ''))
+      if (!(this.config && this.config.search)) return list
+      return list.filter(item => item.main.includes(this.config.search))
     },
     setInputEvent () {
       const { search: { $el } } = this.$refs

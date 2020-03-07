@@ -7,7 +7,7 @@ export function save (content) {
  
 export function load () {
   const data = localStorage.getItem(configKey)
-  return data
+  return data && data !== 'null'
     ? JSON.parse(data)
     : {}
 }

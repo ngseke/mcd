@@ -15,7 +15,7 @@ export function save (content) {
 // 讀取資料，若到期則返回 null
 export function load () {
   const data = localStorage.getItem(menuKey)
-  if (!data) return null
+  if (!data || data === 'null') return null
   
   const { timestamp, content } = JSON.parse(data)
   return getIsExpired(timestamp)
