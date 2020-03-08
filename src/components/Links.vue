@@ -24,7 +24,17 @@ export default {
 
 <style scoped lang="sass">
 .links
+  display: flex
+  justify-content: center
   position: relative
+  &::before
+    content: '跳至: '
+    font-size: 12px
+    color: $grey
+    flex-shrink: 0
+    padding: 5px 0
+    margin-right: .5rem
+    
   ul
     width: 100%
     list-style: none

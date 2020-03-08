@@ -48,6 +48,14 @@ export default {
     display: none
   
 table
+  tr
+    td
+      transition: padding .2s
+      @include media-breakpoint-up(md)
+        padding: 3px 10px!important
+      &:nth-child(2)
+        border-right: solid rgba($grey, .5) 1px
+    
   thead
     tr
       td
@@ -62,8 +70,9 @@ table
           min-width: 7rem
           white-space: nowrap
         &:not(:first-child)
-          padding: 2px 5px
           text-align: right
+          padding: 2px 5px
+          
           
 .set-name
   display: flex
@@ -71,11 +80,12 @@ table
   align-items: center
   font-size: 10px
   color: rgba(white, .8)
-  writing-mode: vertical-rl
   height: 100%
   text-align: right
   vertical-align: middle
   width: 100%
+  @include media-breakpoint-down(sm)
+    writing-mode: vertical-rl
    
   
 .price
