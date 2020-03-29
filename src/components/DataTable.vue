@@ -53,8 +53,6 @@ table
       transition: padding .2s
       @include media-breakpoint-up(md)
         padding: 3px 10px!important
-      &:nth-child(2)
-        border-right: solid rgba($grey, .5) 1px
     
   thead
     tr
